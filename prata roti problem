@@ -1,0 +1,50 @@
+import java.util.*;
+public class Main
+{
+    public static long getMaxParatha(int[] ranks, long t){
+        long tot_sum = 0;
+        for(int i=0;i<ranks.length;i++){
+            long chef_rank = ranks[i];
+            long target_time = t;
+            long lo = 1, hi = (int)1e9, ans = 0;
+            while(lo<=hi){
+                long mid = (lo+hi)/2;
+                long time_required = chef_rank*(mid)*(mid+1)/2;
+                if(time_required>target_time){
+                    hi = mid-1;
+                }
+                else{
+                    ans = mid;
+                    lo = mid+1;
+                }
+            }
+            tot_sum+=ans;
+        }
+        return tot_sum;
+    }    
+    
+    public static long getMinimumTime(int[] ranks, int X){
+        long lo = 1, hi = (int)1e9, ans = 0;
+        while(lo<=hi){
+            long mid = (lo+hi)/2;
+            long max_paratha_cooking_possible_in_mid_minutes = getMaxParatha(ranks, mid);
+            if(max_paratha_cooking_possible_in_mid_minutes>=X){
+                ans = mid;
+                hi = mid-1;
+            }
+            else{
+                lo = mid+1;
+            }
+        }
+        return ans;
+    }
+    
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int x = sc.nextInt();
+		int ranks[] = new int[n];
+		for(int i=0;i<n;i++) ranks[i]=sc.nextInt();
+		System.out.println(getMinimumTime(ranks, x));
+	}
+}
